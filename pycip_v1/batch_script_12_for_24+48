@@ -1,0 +1,31 @@
+#!/bin/bash
+#SBATCH --partition=user
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=5
+#SBATCH -J pycip_12_24_48                # Job name
+#SBATCH -t 0:15:00                      # Walltime limit
+#SBATCH -p user                         # queue to be used
+#SBATCH --exclusive                     # Exclusive use of nodes
+#SBATCH -o /work/users/oko001/cmaq_oper_logs/pycip_logs/LOG_pycip_sbatch_12_24_48.%j.out         # output name
+#SBATCH --mem=10G
+
+datum=`date +"%Y%m%d"`
+export ECCODES_DEFINITION_PATH=/users/p2840/opt/share/eccodes-2.27.0/definitions
+/users/p6065/anaconda3/envs/supergeo/bin/python -u /users/oko001/cmaq_oper_scripts/pycip_v1/configuration_oper.py 12 24 48 > /work/users/oko001/cmaq_oper_logs/pycip_logs/LOG_pycip_${datum}_12_24_48.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

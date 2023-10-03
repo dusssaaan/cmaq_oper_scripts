@@ -71,7 +71,7 @@ def read_vars_pygrib(path,file_name,int_datum,nlay,cut,tprev, tstep):
             if g.shortName == 'sp'                : out['PRSFC']   = get_2D(g, cut)
             if g.shortName == 'tcc'               : out['CFRAC']   = get_2D(g, cut)
             if g.shortName == 'hpbl'              : out['PBL']     = get_2D(g, cut)
-            if g.shortName == 'sot'               : out['TEMPG']   = get_2D(g, cut)
+            if g.shortName == 'st'                : out['TEMPG']   = get_2D(g, cut)
             if g.shortName == 'sde'               : out['SNOCOV']  = get_2D(g, cut)
             if g.shortName == 'ssw'               : out['SOIM1']   = get_2D(g, cut)/1000/0.01  # /hustota vody /depth in [m]
             if g.shortName == 'sfcrh'             : out['ROUGHT']  = get_2D(g, cut)   
@@ -104,7 +104,7 @@ def read_vars_pygrib(path,file_name,int_datum,nlay,cut,tprev, tstep):
             if g.shortName == '2sh'               : out['Q2']     = get_2D(g, cut)
             if g.shortName == '2t'                : out['TEMP2']  = get_2D(g, cut)
 
-        if g.typeOfLevel == 'hybrid' and g.level >= 2 :
+        if g.typeOfLevel == 'hybridPressure' and g.level >= 2 :
 
            if g.shortName == 't'                            : out['T'][g.level-nn,:,:]    = get_2D(g, cut)
           

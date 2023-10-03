@@ -1,67 +1,67 @@
 #!/usr/bin/env /users/p6065/anaconda3/envs/cdsapi/bin/python
+"""
+Function:
+cdsapi script for downloading the CAMS GLOBAL data
+for the ozone just above 5000 m since below is ozone 
+from the CAMS EUROPE
 
+Usage: ./cdsapi_CAMS_GLOBAL.py YYYY-MM-DD
+
+Libraries and modules needed:
+
+libraries: datetime, cdsapi, sys
+modules:
+
+Revision History:
+
+04.08.2023 D.Stefanik: creating first version of script
+"""
 import datetime
 import cdsapi
+import sys
 
 
-datum_start = datetime.datetime(2021,1,1)
-datum_end   = datetime.datetime(2021,1,31)
+datum = datetime.datetime.strptime( str( sys.argv[1] ),'%Y-%m-%d')
+
+
+ds = f'{datum}'[:10]
+
 
 c = cdsapi.Client()
 
-datum = datum_start
-while datum <= datum_end :
+
+c.retrieve(
+    'cams-global-atmospheric-composition-forecasts',
+    {
+        'date': f'{ds}/{ds}',
+        'type': 'forecast',
+        'format': 'grib',
+        'variable': 'ozone',
+        'model_level': [
+            '24', '45', '57',
+            '62', '65', '67',
+            '72', '77', '82',
+            '87', '92', '97',
+        ],
+        'time': '00:00',
+        'leadtime_hour': [
+            '0', '12', '15',
+            '18', '21', '24',
+            '27', '3', '30',
+            '33', '36', '39',
+            '42', '45', '48',
+            '51', '54', '57',
+            '6', '60', '63',
+            '66', '69', '72',
+            '75', '78', '81',
+            '84', '87', '9',
+            '90', '93', '96',
+            '99',
+        ],
+        'area': [52.3, 10.60, 44.83, 25.5,],
+    },     
+    f'/data/users/oko001/cmaq_oper_data/cams_files/download_{ds}_CAMS_GLOBAL_0+96_ozone.grib')
 
 
-       ds=f'{datum}'[:10]
-       print(f'{ds}')
-       
-       c.retrieve(
-            'cams-global-atmospheric-composition-forecasts',
-            {
-              'date': f'{ds}/{ds}',
-              'type': 'forecast',
-              'format': 'grib',
-              'variable': [
-                    'ammonium_aerosol_mass_mixing_ratio', 'carbon_monoxide', 'dust_aerosol_0.03-0.55um_mixing_ratio',
-                    'dust_aerosol_0.55-0.9um_mixing_ratio', 'dust_aerosol_0.9-20um_mixing_ratio', 'ethane',
-                    'formaldehyde', 'hydrogen_peroxide', 'hydrophilic_black_carbon_aerosol_mixing_ratio',
-                    'hydrophilic_organic_matter_aerosol_mixing_ratio', 'hydrophobic_black_carbon_aerosol_mixing_ratio', 'hydrophobic_organic_matter_aerosol_mixing_ratio',
-                    'hydroxyl_radical', 'isoprene', 'methane',
-                    'nitrate_coarse_mode_aerosol_mass_mixing_ratio', 'nitrate_fine_mode_aerosol_mass_mixing_ratio', 'nitric_acid',
-                    'nitrogen_dioxide', 'nitrogen_monoxide', 'ozone',
-                    'peroxyacetyl_nitrate', 'propane', 'sea_salt_aerosol_0.03-0.5um_mixing_ratio',
-                    'sea_salt_aerosol_0.5-5um_mixing_ratio', 'sea_salt_aerosol_5-20um_mixing_ratio', 'sulphate_aerosol_mixing_ratio',
-                    'sulphur_dioxide',
-              ],
-              'model_level': [
-                  '24', '45',
-                  '57', '62', '65',
-                  '67', '72', '77',
-                  '82', '87', '92',
-                  '97', '102', '107',
-                  '110', '113', '115',
-                  '116', '117', '118',
-                  '119', '120', '121',
-                  '122', '123', '124',
-                  '125', '126', '127',
-                  '128', '129', '130',
-                  '131', '132', '133',
-                  '134', '135', '136',
-                  '137',
-              ],
-              'time': '00:00',
-              'leadtime_hour': [
-                  '0', '3', '6',
-                  '9', '12', '15',
-                  '18', '21', '24',
-              ],
-              'area': [
-                    55, 10, 40,
-                    30,
-              ],
-            },
-            f'/data/users/oko001/CAMS_DATA/download_{ds}_mod.grib')
 
-       datum += datetime.timedelta(days=1)
 

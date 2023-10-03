@@ -38,7 +38,7 @@ echo 'Start Model Run At ' `date`
  set VRSN      = v533              #> Code Version - note this must be updated if using ISAM or DDM
  set PROC      = mpi               #> serial or mpi
  set MECH      = cb6r3_ae7_aq      #> Mechanism ID
- set APPL      = 2023_00_0_p_24    # Application Name (e.g. Gridname)
+ set APPL      = 00_0_p_24    # Application Name (e.g. Gridname)
  set compilerString = intel    
                                                       
 #> Define RUNID as any combination of parameters above or others. By default,
@@ -282,10 +282,9 @@ while ($TODAYJ <= $STOP_DAY )  #>Compare dates in terms of YYYYJJJ
      setenv ICFILE CCTM_CGRID_${RUNID}_${YESTERDAY}.nc
      setenv INIT_MEDC_1 $ICpath/CCTM_MEDI
   endif
-
   #> Boundary conditions
-  set BCpath = $INPDIR/static_and_default_files
-  set BCFILE = BCON_v532_ala2km_33_2021_profile # BCON_v532_wrf2021_v1_regrid_${YYYYMMDD}
+  set BCpath = $INPDIR/bcon_files
+  set BCFILE = BCON_v532_reg_00_0_24_regrid_${YYYYMMDD}  #BCON_v532_ala2km_33_2021_profile # BCON_v532_wrf2021_v1_regrid_${YYYYMMDD}
 
   #> Off-line photolysis rates 
   #set JVALfile  = JTABLE_${YYYYJJJ}

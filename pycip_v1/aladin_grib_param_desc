@@ -1,0 +1,40 @@
+u : U component of wind, m s**-1, hybridPressure, instant
+v : V component of wind, m s**-1, hybridPressure, instant
+t : Temperature, K, hybridPressure, instant
+q : Specific humidity, kg kg**-1, hybridPressure, instant
+clwc : Specific cloud liquid water content, kg kg**-1, hybridPressure, instant
+ciwc : Specific cloud ice water content, kg kg**-1, hybridPressure, instant
+cdca : Cloud amount, %, hybridPressure, instant
+cswc : Specific snow water content, kg kg**-1, hybridPressure, instant
+crwc : Specific rain water content, kg kg**-1, hybridPressure, instant
+tke : Turbulent kinetic energy, J kg**-1, hybridPressure, instant
+orog : Orography, m, surface, instant
+lsm : Land-sea mask, (0 - 1), surface, instant
+st : Soil temperature, K, surface, instant
+sot : Soil temperature, K, depthBelowLand, instant
+ssw : soil moisture content, kg m**-2, surface, instant
+sde : Snow depth, m, surface, instant
+al : Albedo, %, surface, instant
+lai : Leaf Area index, -, surface, instant
+sfcrh : surface roughness length for heat, m, surface, instant
+w_i : water content of interception store, kg m**-2, surface, instant
+veg : vegetation fraction, (0 - 1), surface, instant
+cwp : Convective water precipitation, kg m**-2, surface, accum
+lswp : Large scale water precipitation (non-convective), kg m**-2, surface, accum
+csf : Convective snowfall, mm of water equivalent, surface, accum
+lsf : Large-scale snowfall, mm of water equivalent, surface, accum
+ssrd : Surface solar radiation downwards, J m**-2, surface, accum
+ewss : Eastward turbulent surface stress, N m**-2 s, surface, instant
+nsss : Northward turbulent surface stress, N m**-2 s, surface, instant
+slhf : Surface latent heat flux, J m**-2, surface, accum
+sshf : Surface sensible heat flux, J m**-2, surface, accum
+2t : 2 metre temperature, K, heightAboveGround, instant
+10u : 10 metre U wind component, m s**-1, heightAboveGround, instant
+10v : 10 metre V wind component, m s**-1, heightAboveGround, instant
+2sh : 2 metre specific humidity, kg kg**-1, heightAboveGround, instant
+2r : 2 metre relative humidity, %, heightAboveGround, instant
+hpbl : Planetary boundary layer height, m, surface, instant
+tcc : Total cloud cover, (0 - 1), surface, instant
+prmsl : Pressure reduced to MSL, Pa, meanSea, instant
+sp : Surface pressure, Pa, surface, instan
+

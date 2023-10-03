@@ -1,0 +1,20 @@
+!#start   YYYYJJJ
+!#end     YYYYJJJ
+#layer         1
+
+/ File [1]: DRYDEP
+/ File [2]: WETDEP
+/ File [3]: METCRO2D
+/
+/new species       ,units     ,expression
+
+
+!---------------------------------------------------!
+!--------------- Gas Deposition --------------------!
+!---------------------------------------------------!
+WDEP_AI            ,kg ha-1     ,ASO4I[2] + ANH4I[2] + ANO3I[2] + AECI[2] + AOTHRI[2] + ANAI[2] + ACLI[2] + APOCI[2] + APNCOMI[2] + ALVPO1I[2] + ASVPO1I[2] + ASVPO2I[2] + ALVOO1I[2] + ALVOO2I[2] + ASVOO1I[2] + ASVOO2I[2]
+WDEP_AJ            ,kg ha-1     ,ASO4J[2] + ANH4J[2] + ANO3J[2] + AISO1J[2] + AISO2J[2] + ASQTJ[2] + AORGCJ[2] + AECJ[2] + AOTHRJ[2] + AFEJ[2] + AALJ[2] + ASIJ[2] + ATIJ[2] + ACAJ[2] + AMGJ[2] + AKJ[2] + AMNJ[2] + ANAJ[2] + ACLJ[2] + AISO3J[2] + AOLGAJ[2] + AOLGBJ[2] + AGLYJ[2] + AMTNO3J[2] + AMTHYDJ[2] + APOCJ[2] + APNCOMJ[2] + APCSOJ[2] + ALVPO1J[2] + ASVPO1J[2] + ASVPO2J[2] + ASVPO3J[2] + AIVPO1J[2] + ALVOO1J[2] + ALVOO2J[2] + ASVOO1J[2] + ASVOO2J[2] + ASVOO3J[2] + AAVB1J[2] + AAVB2J[2] + AAVB3J[2] + AAVB4J[2]
+WDEP_AK            ,kg ha-1     ,ACLK[2] + ASO4K[2] + ANH4K[2] + ANO3K[2] + ACORS[2]
+WDEP_PM25          ,kg ha-1     ,WDEP_AI[0] + 0.95*WDEP_AJ[0]
+WDEP_PM10          ,kg ha-1     ,WDEP_AI[0] + WDEP_AJ[0] + WDEP_AK[0]
+ 

@@ -82,7 +82,7 @@ def gridded_to_netCDF(output_dir,out_file_name,var_names,dic_species,datum,proje
                     'NTHIK':np.int32(1),
                     'NVARS':np.int32(len(dic_species.keys())),
                     'SDATE':np.int32('{0}{1:03d}'.format(datum.year,datum.timetuple().tm_yday)),
-                    'STIME':np.int32(0),
+                    'STIME':np.int32( datum.hour *10000 ),
                     'TSTEP':np.int32(10000),
                     'UPNAM':"OPENEOUT        ",
                     'VAR-LIST':"".join('{0:16s}'.format(f) for f in dic_species.keys()),

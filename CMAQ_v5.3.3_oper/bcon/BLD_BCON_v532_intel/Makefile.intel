@@ -1,0 +1,139 @@
+#   Makefile generated for serial execution using program bldmake
+#
+#   Generation date [01/28/2022  13:20:17]
+#   Configuration file [BCON_v532.cfg.bld]
+#   Using GIT repository [/users/p6001/CMAQ_v5.3.3_c/PREP/bcon/src]
+#   Full Compiler Paths when Makefile was Built:
+#       FC = /opt/intel/oneapi/mpi/2021.4.0/bin/mpiifort
+#       CC = /usr/bin/cc
+#   Library Paths:
+#      $(LIB)/ioapi/include_files -> /users/p6001/ioapi-3.2/ioapi/fixed_src
+#      $(LIB)/ioapi/lib -> /users/p6001/ioapi-3.2/Linux2_x86_64-intel
+#      $(LIB)/mpi -> mpi_lib_intel
+#      $(LIB)/netcdf -> /users/p6001/netcdf-c-4.7.1/netcdf-c-4.7.1-intel-netcdf4/lib
+#      $(LIB)/netcdff -> /users/p6001/netcdf-fortran-4.5.2/netcdf-fortran-4.5.2-intel-netcdf4/lib
+#
+#   Command-Line Options:      
+#      DEBUG = TRUE or true -- turn on debug flags 
+#  OR  debug = true or TRUE -- turn on debug flags 
+#  Can set either variable by using the setenv command for
+#  a debugging session with multiple compilations
+#
+#------------------------------------------------- 
+
+ EXEC = BCON_v532.exe
+
+ FC = mpiifort
+ CC = cc
+
+ LIB = /users/p6001/CMAQ_v5.3.3/lib/x86_64/intel
+ include_path = -I $(LIB)/ioapi/lib \
+                -I $(LIB)/ioapi/include_files
+
+ WARN = 
+ FSTD = -O3 -fno-alias -mp1 -fp-model source -ftz -simd -align all -xHost -vec-guard-write -unroll-aggressive
+ DBG  = -O0 -g -check bounds -check uninit -fpe0 -fno-alias -ftrapuv -traceback
+
+ ifneq (,$(filter $(debug), TRUE true True T ))
+     DEBUG = TRUE
+ endif
+
+ ifneq (,$(filter $(DEBUG), TRUE true ))
+     f_FLAGS   = -fixed -132 $(DBG) $(include_path)
+     f90_FLAGS = -free $(DBG) $(include_path)
+ else
+     f_FLAGS   = -fixed -132 $(FSTD) $(include_path)
+     f90_FLAGS = -free $(FSTD) $(include_path)
+ endif
+
+ F_FLAGS   = $(f_FLAGS)
+ F90_FLAGS = $(f90_FLAGS)
+ C_FLAGS   = -I.
+
+ LINKER     = $(FC)
+ LINK_FLAGS = 
+
+ REPOROOT = /users/p6001/CMAQ_v5.3.3_c/PREP/bcon/src
+
+ CPP = $(FC)
+ cpp_flags = 
+
+ ifneq (,$(filter $(isam), TRUE true True T ))
+     CPP_FLAGS   = -Disam $(cpp_flags)
+ else
+     CPP_FLAGS   = $(cpp_flags)
+ endif
+
+ IOAPI  = -L$(LIB)/ioapi/lib -lioapi
+ NETCDF = -L$(LIB)/netcdff/lib -lnetcdff -L$(LIB)/netcdf/lib -lnetcdff -lnetcdf
+ LIBRARIES = $(IOAPI) $(NETCDF)
+
+
+GLOBAL_MODULES = \
+  BC_PARMS.o \
+  HGRD_DEFN.o \
+  VGRD_DEFN.o
+
+COMMON = \
+  bcon.o \
+  findex.o \
+  lat_lon.o \
+  lr_interp.o \
+  opn_bc_file.o
+
+M3CONC = \
+  m3_bcout.o \
+  m3_ck_bdy.o \
+  m3_ck_ctms.o \
+  m3_ck_met.o \
+  m3_driver.o \
+  m3_vinterp.o
+
+PROFILE = \
+  prof_bcout.o \
+  prof_driver.o \
+  prof_vinterp.o
+
+OBJS = \
+  $(GLOBAL_MODULES) \
+  $(COMMON) \
+  $(M3CONC) \
+  $(PROFILE)
+
+.SUFFIXES: .F .f .c .F90 .f90
+
+$(EXEC): $(OBJS)
+	$(LINKER) $(LINK_FLAGS) $(OBJS) $(LIBRARIES) -o $@
+
+.F.o:
+	$(FC) -c $(F_FLAGS) $(CPP_FLAGS) $(INCLUDES) $<
+
+.f.o:
+	$(FC) -c $(F_FLAGS) $<
+
+.F90.o:
+	$(FC) -c $(F90_FLAGS) $(CPP_FLAGS) $(INCLUDES) $<
+
+.f90.o:
+	$(FC) -c $(F90_FLAGS) $<
+
+.c.o:
+	$(CC) -c $(C_FLAGS) $<
+
+clean:
+	rm -f $(OBJS) *.mod
+
+
+# dependencies
+
+bcon.o:	HGRD_DEFN.o VGRD_DEFN.o BC_PARMS.o
+opn_bc_file.o:	HGRD_DEFN.o VGRD_DEFN.o BC_PARMS.o
+m3_bcout.o:	HGRD_DEFN.o VGRD_DEFN.o BC_PARMS.o
+m3_ck_bdy.o:	HGRD_DEFN.o VGRD_DEFN.o BC_PARMS.o
+m3_ck_ctms.o:	BC_PARMS.o
+m3_ck_met.o:	BC_PARMS.o
+m3_driver.o:	HGRD_DEFN.o VGRD_DEFN.o BC_PARMS.o
+m3_vinterp.o:	HGRD_DEFN.o VGRD_DEFN.o BC_PARMS.o
+prof_bcout.o:	HGRD_DEFN.o VGRD_DEFN.o BC_PARMS.o
+prof_driver.o:	BC_PARMS.o
+prof_vinterp.o:	HGRD_DEFN.o VGRD_DEFN.o BC_PARMS.o

@@ -38,7 +38,7 @@ echo 'Start Model Run At ' `date`
  set VRSN      = v533              #> Code Version - note this must be updated if using ISAM or DDM
  set PROC      = mpi               #> serial or mpi
  set MECH      = cb6r3_ae7_aq      #> Mechanism ID
- set APPL      = 2023_00_0_p_24    # Application Name (e.g. Gridname)
+ set APPL      = 00_24_p_48        # Application Name (e.g. Gridname)
  set compilerString = intel    
                                                       
 #> Define RUNID as any combination of parameters above or others. By default,
@@ -75,8 +75,9 @@ echo 'Start Model Run At ' `date`
 
 #> Set Start and End Days for looping
  setenv NEW_START  $2              #> Set to FALSE for model restart
- set START_DATE =  $1              #> beginning date (July 1, 2016)
- set END_DATE   =  $1     #> ending date    (July 1, 2016)
+ set FORECAST_DAY = `date -ud "$1+1days" +%Y-%m-%d`
+ set START_DATE   =  $FORECAST_DAY              #> beginning date (July 1, 2016)
+ set END_DATE     =  $FORECAST_DAY              #> ending date    (July 1, 2016)
 
 #> Set Timestepping Parameters
 set STTIME     = 000000            #> beginning GMT time (HHMMSS)
@@ -253,8 +254,8 @@ while ($TODAYJ <= $STOP_DAY )  #>Compare dates in terms of YYYYJJJ
   set YYYYJJJ = $TODAYJ
 
   #> Calculate Yesterday's Date
-  set YESTERDAY = `date -ud "${TODAYG}-1days" +%Y%m%d` #> Convert YYYY-MM-DD to YYYYJJJ
-  set YESTERDAYG = `date -ud "${TODAYG}-1days" +%Y-%m-%d`
+  set YESTERDAY = `date -ud "${TODAYG}-1days" +%Y%m%d` #> Yesterday in YYYYMMDD
+  set YESTERDAYG = `date -ud "${TODAYG}-1days" +%Y-%m-%d` #> Yesterday in YYYY-MM-DD
 
 # =====================================================================
 #> Set Output String and Propagate Model Configuration Documentation
@@ -263,7 +264,7 @@ while ($TODAYJ <= $STOP_DAY )  #>Compare dates in terms of YYYYJJJ
   echo "Set up input and output files for Day ${TODAYG}."
 
   #> set output file name extensions
-  setenv CTM_APPL ${RUNID}_${YYYYMMDD} 
+  setenv CTM_APPL ${RUNID}_${YESTERDAY} #changed from YYYYMMDD 
   
   #> Copy Model Configuration To Output Folder
   if ( ! -d "$OUTDIR" ) mkdir -p $OUTDIR
@@ -279,14 +280,14 @@ while ($TODAYJ <= $STOP_DAY )  #>Compare dates in terms of YYYYJJJ
      setenv ICFILE ICON_v532_ala2km_33_2021_profile#ICFILE ICON_v532_wrf2021_v1_profile
      setenv INIT_MEDC_1 notused
   else
-     set ICpath = $OUTDIR
-     setenv ICFILE CCTM_CGRID_${RUNID}_${YESTERDAY}.nc
+     set ICpath = /data/users/oko001/cmaq_oper_data/cmaq_out/output_CCTM_v533_intel_00_0_p_24
+     setenv ICFILE CCTM_CGRID_v533_intel_00_0_p_24_${YESTERDAY}.nc
      setenv INIT_MEDC_1 $ICpath/CCTM_MEDI
   endif
 
   #> Boundary conditions
-  set BCpath = $INPDIR/static_and_default_files
-  set BCFILE = BCON_v532_ala2km_33_2021_profile # BCON_v532_wrf2021_v1_regrid_${YYYYMMDD}
+  set BCpath = $INPDIR/bcon_files
+  set BCFILE = BCON_v532_reg_00_24_48_regrid_${YESTERDAY}
 
   #> Off-line photolysis rates 
   #set JVALfile  = JTABLE_${YYYYJJJ}
@@ -300,17 +301,17 @@ while ($TODAYJ <= $STOP_DAY )  #>Compare dates in terms of YYYYJJJ
   #> MCIP meteorology files 
 
   set METpath_st   = /data/users/oko001/cmaq_oper_data/static_and_default_files
-  set prip = 00_for_0+24  
+  set prip = 00_for_24+48  
 
   set TODAYGG    = 2021-01-01 
   setenv GRID_BDY_2D $METpath_st/GRIDBDY2D_${TODAYGG}.nc  # GRID files are static, not day-specific
   setenv GRID_CRO_2D $METpath_st/GRIDCRO2D_${TODAYGG}.nc
   #setenv GRID_CRO_3D $METpath/GRIDCRO3D_${TODAYG}.nc
   setenv GRID_DOT_2D $METpath_st/GRIDDOT2D_${TODAYGG}.nc
-  setenv MET_CRO_2D  $METpath/METCRO2D_PYCIP-${TODAYG}_${prip}.nc
-  setenv MET_CRO_3D  $METpath/METCRO3D_PYCIP-${TODAYG}_${prip}.nc
-  setenv MET_DOT_3D  $METpath/METDOT3D_PYCIP-${TODAYG}_${prip}.nc
-  setenv MET_BDY_3D  $METpath/METBDY3D_PYCIP-${TODAYG}_${prip}.nc
+  setenv MET_CRO_2D  $METpath/METCRO2D_PYCIP-${YESTERDAYG}_${prip}.nc
+  setenv MET_CRO_3D  $METpath/METCRO3D_PYCIP-${YESTERDAYG}_${prip}.nc
+  setenv MET_DOT_3D  $METpath/METDOT3D_PYCIP-${YESTERDAYG}_${prip}.nc
+  setenv MET_BDY_3D  $METpath/METBDY3D_PYCIP-${YESTERDAYG}_${prip}.nc
   setenv LUFRAC_CRO  $METpath_st/LUFRAC_CRO_${TODAYGG}.nc
 
   #> Emissions Control File
@@ -336,7 +337,7 @@ while ($TODAYJ <= $STOP_DAY )  #>Compare dates in terms of YYYYJJJ
 
   #> Gridded Emissions Files 
   setenv N_EMIS_GR 1
-  set EMISfile  = EM_oper-${TODAYG}_${prip}.nc #EM_2022-${TODAYG}.nc
+  set EMISfile  = EM_oper-${YESTERDAYG}_${prip}.nc #EM_2022-${TODAYG}.nc
   setenv GR_EMIS_001 ${EMISpath}/${EMISfile}
   setenv GR_EMIS_LAB_001 GRIDDED_EMIS_ALL
   setenv GR_EM_SYM_DATE_001 F # To change default behaviour please see Users Guide for EMIS_SYM_DATE
@@ -391,7 +392,7 @@ while ($TODAYJ <= $STOP_DAY )  #>Compare dates in terms of YYYYJJJ
 #  setenv STK_GRPS_008 $IN_PTpath/stack_groups/stack_groups_cmv_c3_${STKCASEG}.nc
 
   # Emission Rates for Inline Point Sources
-   setenv STK_EMIS_001 ${EMISpath}/EM_oper_STACK-${TODAYG}_${prip}.nc
+   setenv STK_EMIS_001 ${EMISpath}/EM_oper_STACK-${YESTERDAYG}_${prip}.nc
 #   setenv STK_EMIS_001 ${EMISpath}/EM_2022_STACK-${TODAYG}.nc
 #   setenv STK_EMIS_002 ${EMISpath}/outputs-final-2021_TNO/EM_2015_TNO_STACK-${TODAYG}.nc
 
